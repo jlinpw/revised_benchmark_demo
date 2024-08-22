@@ -6,7 +6,7 @@
 # Exit if any command fails!
 # Sometimes workflow runs fine but there are SSH problems.
 # This line is useful for debugging but can be commented out.
-set -ex
+# set -ex
 source inputs.sh
 
 # Useful info for context
@@ -35,7 +35,7 @@ echod() {
     echo $(date): $@
     }
 
-export WFP_whost=${commands_resource_1_publicIp}
+export WFP_whost=${resource_publicIp}
 
 # Testing echod
 echod Testing echod. Currently on `hostname`.
@@ -67,7 +67,7 @@ echod "Check connection to cluster"
 sshcmd="ssh -f ${ssh_options} $WFP_whost"
 ${sshcmd} hostname
 
-WFP_jobscript=${commands_jsource}.sbatch 
+WFP_jobscript=${jsource}.sbatch 
 scp ${jobdir}/slurm-jobs/generic/${WFP_jobscript} ${WFP_whost}:${HOME}
 echo "setting up env file..."
 echo "git clone -c feature.manyFiles=true https://github.com/spack/spack.git" > ${jobdir}/wfenv.sh 
@@ -77,41 +77,9 @@ echo "lmod=\$(ls -1 /usr/share/lmod | grep -E '^[0-9]+\.[0-9]+' | sort -V | tail
 echo "source /usr/share/lmod/\${lmod}/init/bash" >> ${jobdir}/wfenv.sh
 echo "yes | spack module lmod refresh intel-oneapi-mpi intel-oneapi-compilers gcc-runtime glibc" >> ${jobdir}/wfenv.sh
 echo "export MODULEPATH=\$MODULEPATH:$HOME/spack/share/spack/lmod/linux-rocky8-x86_64/Core" >> ${jobdir}/wfenv.sh
+echo "export MODULEPATH=\$MODULEPATH:$HOME/spack/share/spack/lmod/linux-centos7-x86_64/Core" >> ${jobdir}/wfenv.sh
 echo "echo \$MODULEPATH" >> ${jobdir}/wfenv.sh
 echo "module load \$(module avail 2>&1 | grep "intel-oneapi-compilers")" >> ${jobdir}/wfenv.sh
 echo "module load \$(module avail 2>&1 | grep "intel-oneapi-mpi")" >> ${jobdir}/wfenv.sh
 
 scp ${jobdir}/wfenv.sh ${WFP_whost}:${HOME}
-
-echo "submitting batch job..."
-jobid=$(${sshcmd} "sbatch -o ${HOME}/slurm_job_%j.out -e /${HOME}/slurm_job_%j.out -N ${commands_nnodes} --ntasks-per-node=${commands_ppn} ${WFP_jobscript};echo Runcmd done2 >> ~/job.exit" | tail -1 | awk -F ' ' '{print $4}')
-echo "JOB ID: ${jobid}"
-
-# Prepare kill script
-echo "${sshcmd} \"scancel ${jobid}\"" > kill.sh
-
-# Job status file writen by remote script:
-while true; do    
-    # squeue won't give you status of jobs that are not running or waiting to run
-    # qstat returns the status of all recent jobs
-    job_status=$($sshcmd squeue | awk -v id="$jobid" '$1 == id {print $5}')
-    # If job status is empty job is no longer running
-    if [ -z ${job_status} ]; then
-        job_status=$($sshcmd "sacct -j ${jobid} --format=state" | tail -n1)
-        echo "JOB STATUS: ${job_status}"
-        break
-    fi
-    echo "JOB STATUS: ${job_status}"
-    sleep 30
-done
-
-# copy iperf to cluster
-${jobdir}/run_iperf.sh ${jobdir}/inputs.sh ${WFP_whost}:${HOME}
-
-# execute the script
-bash run_iperf.sh > iperf_${jobid}.out
-
-# copy the job output file back to the workflow run dir
-scp ${WFP_whost}:${HOME}/slurm_job_${jobid}.out ${jobdir}
-
-echo Done!
