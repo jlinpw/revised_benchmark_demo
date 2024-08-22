@@ -43,9 +43,9 @@ echo "running intel mpi test"
 mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall
 
 # small ior
-echo "running standard ior"
+echo "running minimal ior"
 mpirun -ppn $SLURM_CPUS_ON_NODE $HOME/lustre/bench/ior/bin_$SLURM_JOB_ID/ior -w -i 1 -o $HOME/lustre/bench/ior/run_$SLURM_JOB_ID/out -t 1m -b 16m -s 16 -F -C -e
 
 # small mdtest 
-echo "running standard mdtest"
+echo "running minimal mdtest"
 mpirun -ppn $SLURM_CPUS_ON_NODE $HOME/lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -i 1 -u -d $HOME/lustre/bench/mdtest/run_$SLURM_JOB_ID
