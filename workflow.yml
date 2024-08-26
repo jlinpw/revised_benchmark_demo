@@ -1,6 +1,6 @@
 github:
   - repo: https://github.com/jlinpw/revised_benchmark_demo.git
-    branch: main
+    branch: hammerspace
     sparse_checkout:
       - run_iperf.sh
       - iperf.sh
