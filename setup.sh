@@ -79,7 +79,7 @@ echo "yes | spack module lmod refresh intel-oneapi-mpi intel-oneapi-compilers gc
 echo "export MODULEPATH=\$MODULEPATH:$HOME/spack/share/spack/lmod/linux-rocky8-x86_64/Core" >> ${jobdir}/wfenv.sh
 echo "export MODULEPATH=\$MODULEPATH:$HOME/spack/share/spack/lmod/linux-centos7-x86_64/Core" >> ${jobdir}/wfenv.sh
 echo "echo \$MODULEPATH" >> ${jobdir}/wfenv.sh
-echo "module load \$(module avail 2>&1 | grep "intel-oneapi-compilers")" >> ${jobdir}/wfenv.sh
-echo "module load \$(module avail 2>&1 | grep "intel-oneapi-mpi")" >> ${jobdir}/wfenv.sh
+echo "module load gcc-runtime glibc" >> ${jobdir}/wfenv.sh
+echo "module load intel-oneapi-mpi intel-oneapi-compilers" >> ${jobdir}/wfenv.sh
 
 scp ${jobdir}/wfenv.sh ${WFP_whost}:${HOME}
