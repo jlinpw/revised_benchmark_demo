@@ -40,12 +40,12 @@ cp $HOME/ior/src/mdtest /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
 
 # run intel mpi test
 echo "running intel mpi test"
-mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall
+mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall > alltoall_$SLURM_JOB_ID.txt
 
 # small ior
 echo "running minimal ior"
-mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/ior/bin_$SLURM_JOB_ID/ior -w -i 1 -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t 1m -b 16m -s 16 -F -C -e
+mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/ior/bin_$SLURM_JOB_ID/ior -w -i 1 -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t 1m -b 16m -s 16 -F -C -e > minimal_ior_$SLURM_JOB_ID.txt
 
 # small mdtest 
 echo "running minimal mdtest"
-mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -i 1 -u -d /lustre/bench/mdtest/run_$SLURM_JOB_ID
+mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -i 1 -u -d /lustre/bench/mdtest/run_$SLURM_JOB_ID > minimal_mdtest_$SLURM_JOB_ID.txt
