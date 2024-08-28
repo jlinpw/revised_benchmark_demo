@@ -39,16 +39,16 @@ cp $HOME/ior/src/ior /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior
 cp $HOME/ior/src/mdtest /hammerspace/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
 
 # run intel mpi test
-echo
+echo "======================"
 echo "running intel mpi test"
 mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall
 
 # small ior
-echo
+echo "======================"
 echo "running minimal ior"
 mpirun -ppn $SLURM_CPUS_ON_NODE /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior -w -i 1 -o /hammerspace/bench/ior/run_$SLURM_JOB_ID/out -t 1m -b 16m -s 16 -F -C -e
 
 # small mdtest 
-echo
+echo "======================"
 echo "running minimal mdtest"
 mpirun -ppn $SLURM_CPUS_ON_NODE /hammerspace/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -i 1 -u -d /hammerspace/bench/mdtest/run_$SLURM_JOB_ID
