@@ -39,13 +39,16 @@ cp $HOME/ior/src/ior /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior
 cp $HOME/ior/src/mdtest /hammerspace/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
 
 # run intel mpi test
+echo
 echo "running intel mpi test"
 mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall
 
 # standard ior
+echo
 echo "running standard ior"
 mpirun -ppn $SLURM_CPUS_ON_NODE /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior -w -i 3 -o /hammerspace/bench/ior/run_$SLURM_JOB_ID/out -t 64m -b 64m -s 16 -F -C -e
 
 # standard mdtest 
+echo
 echo "running standard mdtest"
 mpirun -ppn $SLURM_CPUS_ON_NODE /hammerspace/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -e 4096 -w 4096 -i 3 -u -d /hammerspace/bench/mdtest/run_$SLURM_JOB_ID
