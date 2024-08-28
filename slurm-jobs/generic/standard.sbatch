@@ -28,7 +28,7 @@ make clean && make
 
 # test build
 echo "running test build"
-mpirun ./src/ior
+mpirun ./src/ior > $HOME/test_build_$SLURM_JOB_ID.txt
 
 # run dir setup
 mkdir -p /lustre/bench/ior/bin_$SLURM_JOB_ID /lustre/bench/ior/run_$SLURM_JOB_ID
