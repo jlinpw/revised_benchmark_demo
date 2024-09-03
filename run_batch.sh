@@ -5,7 +5,7 @@ source inputs.sh
 
 jobdir=${PWD}
 export WFP_whost=${resource_publicIp}
-WFP_jobscript=${jsource}.sbatch 
+WFP_jobscript=${jsource}_mdtest.sbatch 
 echo Running on $WFP_whost
 
 ssh_options="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
@@ -38,6 +38,4 @@ echo "batch job done!"
 # copy the job output files back to the workflow run dir
 scp ${WFP_whost}:${HOME}/slurm_job_${jobid}.out ${jobdir}
 scp ${WFP_whost}:${HOME}/test_build_${jobid}.txt ${jobdir}
-scp ${WFP_whost}:${HOME}/alltoall_${jobid}.txt ${jobdir}
-scp ${WFP_whost}:${HOME}/${jsource}_ior_${jobid}.txt ${jobdir}
 scp ${WFP_whost}:${HOME}/${jsource}_mdtest_${jobid}.txt ${jobdir}
