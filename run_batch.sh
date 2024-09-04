@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -ex
+set -ex
 source inputs.sh
 export UCX_TLS=ud,sm,self
 
