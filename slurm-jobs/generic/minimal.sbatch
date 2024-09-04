@@ -8,7 +8,7 @@
 # source wfenv to load intel modules
 source wfenv.sh
 source inputs.sh
-export UCX_TLS=ud,sm,self
+export UCX_TLS=tcp
 
 # verify environment
 echo "verifying loaded modules..."
