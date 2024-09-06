@@ -2,7 +2,6 @@
 
 # set -ex
 source inputs.sh
-export UCX_TLS=tcp
 
 jobdir=${PWD}
 export WFP_whost=${resource_publicIp}
