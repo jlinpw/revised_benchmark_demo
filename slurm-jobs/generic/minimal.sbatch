@@ -32,8 +32,8 @@ echo "running test build"
 mpirun ./src/ior
 
 # run dir setup
-mkdir -p /hammerspace/bench/ior/bin_$SLURM_JOB_ID /hammerspace/bench/ior/run_$SLURM_JOB_ID
-mkdir -p /hammerspace/bench/mdtest/bin_$SLURM_JOB_ID /hammerspace/bench/mdtest/run_$SLURM_JOB_ID
+sudo mkdir -p /hammerspace/bench/ior/bin_$SLURM_JOB_ID /hammerspace/bench/ior/run_$SLURM_JOB_ID
+sudo mkdir -p /hammerspace/bench/mdtest/bin_$SLURM_JOB_ID /hammerspace/bench/mdtest/run_$SLURM_JOB_ID
 
 # copy executables to hammerspace 
 cp $HOME/ior/src/ior /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior
