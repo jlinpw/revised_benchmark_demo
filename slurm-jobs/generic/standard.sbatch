@@ -40,12 +40,14 @@ cp $HOME/ior/src/ior /lustre/bench/ior/bin_$SLURM_JOB_ID/ior
 cp $HOME/ior/src/mdtest /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
 
 # run intel mpi test
-echo "running intel mpi test"
-mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall > $HOME/alltoall_$SLURM_JOB_ID.txt
+# echo "running intel mpi test"
+# mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall > $HOME/alltoall_$SLURM_JOB_ID.txt
 
 # standard ior
 echo "running standard ior"
-mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/ior/bin_$SLURM_JOB_ID/ior -w -i 3 -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t 64m -b 64m -s 16 -F -C -e > $HOME/standard_ior_$SLURM_JOB_ID.txt
+mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/ior/bin_$SLURM_JOB_ID/ior -w -r -i 3 -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t 64m -b 64m -s 16 -F -C -e > $HOME/standard_ior_64m_$SLURM_JOB_ID.txt
+mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/ior/bin_$SLURM_JOB_ID/ior -w -r -i 3 -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t 1m -b 64m -s 16 -F -C -e > $HOME/standard_ior__1m_$SLURM_JOB_ID.txt
+mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/ior/bin_$SLURM_JOB_ID/ior -w -r -i 3 -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t 4k -b 64m -s 16 -F -C -e > $HOME/standard_ior_4k_$SLURM_JOB_ID.txt
 
 # standard mdtest 
 echo "running standard mdtest"
