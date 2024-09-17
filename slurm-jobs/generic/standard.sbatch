@@ -36,12 +36,12 @@ mkdir -p /lustre/bench/ior/bin_$SLURM_JOB_ID /lustre/bench/ior/run_$SLURM_JOB_ID
 mkdir -p /lustre/bench/mdtest/bin_$SLURM_JOB_ID /lustre/bench/mdtest/run_$SLURM_JOB_ID
 
 # copy executables to lustre 
-cp $HOME/ior/src/ior /lustre/bench/ior/bin_$SLURM_JOB_ID/ior
-cp $HOME/ior/src/mdtest /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
+# cp $HOME/ior/src/ior /lustre/bench/ior/bin_$SLURM_JOB_ID/ior
+# cp $HOME/ior/src/mdtest /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
 
 # run intel mpi test
-# echo "running intel mpi test"
-# mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall > $HOME/alltoall_$SLURM_JOB_ID.txt
+echo "running intel mpi test"
+mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall > $HOME/alltoall_$SLURM_JOB_ID.txt
 
 # standard ior
 echo "running standard ior"
