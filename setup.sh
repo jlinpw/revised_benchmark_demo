@@ -74,7 +74,7 @@ cat > ${jobdir}/wfenv.sh <<EOF
 if [ ! -d "$HOME/spack" ]; then
     git clone -c feature.manyFiles=true https://github.com/spack/spack.git
 fi
-. $HOME/spack/share/spack/setup-env.sh"
+. $HOME/spack/share/spack/setup-env.sh
 spack install intel-oneapi-mpi intel-oneapi-compilers
 lmod=\$(ls -1 /usr/share/lmod | grep -E '^[0-9]+\.[0-9]+' | sort -V | tail -n 1)
 source /usr/share/lmod/\${lmod}/init/bash
