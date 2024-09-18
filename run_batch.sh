@@ -38,7 +38,3 @@ echo "batch job done!"
 
 # copy the job output files back to the workflow run dir
 scp ${WFP_whost}:${HOME}/slurm_job_${jobid}.out ${jobdir}
-scp ${WFP_whost}:${HOME}/test_build_${jobid}.txt ${jobdir}
-scp ${WFP_whost}:${HOME}/alltoall_${jobid}.txt ${jobdir}
-scp ${WFP_whost}:${HOME}/${jsource}_ior_${jobid}.txt ${jobdir}
-scp ${WFP_whost}:${HOME}/${jsource}_mdtest_${jobid}.txt ${jobdir}
