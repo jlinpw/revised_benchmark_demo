@@ -1,31 +1,21 @@
 github:
   - repo: https://github.com/jlinpw/revised_benchmark_demo.git
-    branch: main
+    branch: mdtest
     sparse_checkout:
-      - run_iperf.sh
-      - iperf.sh
       - run_batch.sh
       - /slurm-jobs/generic
       - setup.sh
-      - copy.sh 
-
 jobs:
   setup:
     steps:
       - name: setup
         run: ./setup.sh
-  run_batch:
+  run_mdtest_and_ior:
     needs:
       - setup
     steps:
-      - name: run batch job
+      - name: Run MDTest and IOR
         run: ./run_batch.sh
-  run_iperf:
-    needs:
-      - setup
-    steps:
-      - name: run iperf
-        run: ./iperf.sh
 'on':
   execute:
     inputs:
