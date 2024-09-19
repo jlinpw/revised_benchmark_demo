@@ -40,16 +40,14 @@ cp $HOME/ior/src/ior /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior
 cp $HOME/ior/src/mdtest /hammerspace/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
 
 # run intel mpi test
-# echo "======================"
-# echo "running intel mpi test"
-# mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall > alltoall_$SLURM_JOB_ID.txt
+echo "======================"
+echo "running intel mpi test"
+mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall > alltoall_$SLURM_JOB_ID.txt
 
 # standard ior
 echo "======================"
 echo "running standard ior"
-mpirun -ppn $SLURM_CPUS_ON_NODE /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior -r -w -i 3 -o /hammerspace/bench/ior/run_$SLURM_JOB_ID/out -t 64m -b 64m -s 16 -F -C -e 
-mpirun -ppn $SLURM_CPUS_ON_NODE /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior -r -w -i 3 -o /hammerspace/bench/ior/run_$SLURM_JOB_ID/out -t 1m -b 64m -s 16 -F -C -e 
-mpirun -ppn $SLURM_CPUS_ON_NODE /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior -r -w -i 3 -o /hammerspace/bench/ior/run_$SLURM_JOB_ID/out -t 4k -b 64m -s 16 -F -C -e
+mpirun -ppn $SLURM_CPUS_ON_NODE /hammerspace/bench/ior/bin_$SLURM_JOB_ID/ior -r -w -i 3 -o /hammerspace/bench/ior/run_$SLURM_JOB_ID/out -t 64m -b 64m -s 16 -F -C -e
 
 # standard mdtest 
 echo "======================"
