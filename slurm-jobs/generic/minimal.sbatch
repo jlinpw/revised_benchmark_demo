@@ -43,9 +43,41 @@ cp $HOME/ior/src/mdtest /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
 echo "running intel mpi test"
 mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall 
 
+# make IOR command
+ior_cmd=/lustre/bench/ior/bin_$SLURM_JOB_ID/ior
+ior_args=""
+
+# Add -w flag if write is true
+if [ "$ior_write" = true ]; then
+  ior_args="$ior_args -w"
+fi
+
+# Add -r flag if read is true
+if [ "$ior_read" = true ]; then
+  ior_args="$ior_args -r"
+fi
+
+# Add iterations flag, test file, transfer size, block size, segments
+ior_args="$ior_args -i $ior_iterations -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t $ior_transfer_size -b $ior_block_size -s $ior_segment_count"
+
+# Add -F flag if fpp is true
+if [ "$ior_fpp" = true ]; then
+  ior_args="$ior_args -F"
+fi
+
+# Add -C flag if reorder is true
+if [ "$ior_reorder" = true ]; then
+  ior_args="$ior_args -C"
+fi
+
+# Add -e flag if fsync is true
+if [ "$ior_fsync" = true ]; then
+  ior_args="$ior_args -e"
+fi
+
 # small ior
 echo "running minimal ior"
-mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/ior/bin_$SLURM_JOB_ID/ior -w -r -i 1 -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t 1m -b 16m -s 16 -F -C -e 
+mpirun -ppn $SLURM_CPUS_ON_NODE $ior_cmd $ior_args
 
 # small mdtest 
 echo "running minimal mdtest"

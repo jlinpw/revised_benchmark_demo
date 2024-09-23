@@ -1,58 +1,97 @@
 github:
   - repo: https://github.com/jlinpw/revised_benchmark_demo.git
-    branch: main
+    branch: ior_options
     sparse_checkout:
-      - run_iperf.sh
-      - iperf.sh
       - run_batch.sh
       - /slurm-jobs/generic
       - setup.sh
-      - copy.sh 
-
 jobs:
   setup:
     steps:
       - name: setup
         run: ./setup.sh
-  run_batch:
+  run_mdtest_and_ior:
     needs:
       - setup
     steps:
-      - name: run batch job
+      - name: Run MDTest and IOR
         run: ./run_batch.sh
-  run_iperf:
-    needs:
-      - setup
-    steps:
-      - name: run iperf
-        run: ./iperf.sh
 'on':
   execute:
     inputs:
-      header:
-        type: header
-        text: Benchmarking Workflow
-        size: 20
-      resource:
-        type: compute-clusters
-        label: Resource
-      jsource:
-        type: dropdown
-        label: Select benchmark to run
-        tooltip: Select which built-in benchmark to run
-        options:
-          - label: Standard
-            value: standard
-          - label: Minimal
-            value: minimal
-        default: standard
-      nnodes:
-        label: Number of Nodes
-        type: string
-        tooltip: Number of nodes for the job
-        default: '10'
-      ppn:
-        label: Tasks per node
-        tooltip: Number of MPI nodes to run per node
-        type: string
-        default: '1'
+      settings:
+        type: group
+        label: Benchmark Settings
+        items:
+          resource:
+            type: compute-clusters
+            label: Resource
+          jsource:
+            type: dropdown
+            label: Select benchmark to run
+            tooltip: Select which built-in benchmark to run
+            options:
+              - label: Standard
+                value: standard
+              - label: Minimal
+                value: minimal
+            default: standard
+          nnodes:
+            label: Number of Nodes
+            type: number
+            tooltip: Number of nodes for the job
+            default: 10
+          ppn:
+            label: Tasks per node
+            tooltip: Number of MPI nodes to run per node
+            type: number
+            default: 1
+      ior:
+        type: group
+        label: IOR Settings
+        items:
+          transfer_size:
+            label: Transfer Size
+            type: string
+            default: 1m
+            tooltip: '-t: size of transfer in bytes (e.g.: 8, 4k, 2m, 1g)'
+          block_size:
+            label: Block Size
+            type: string
+            default: 1m
+            tooltip: '-b: contiguous bytes to write per task (e.g.: 8, 4k, 2m, 1g)'
+          segment_count:
+            label: Segment Count
+            type: number
+            default: 16
+            tooltip: '-s: number of segments'
+          iterations:
+            label: Number of iterations
+            type: number
+            default: 1
+            tooltip: '-i: number of iterations to run'
+          write:
+            label: Write File
+            type: boolean
+            default: true
+            tooltip: '-w: write file for test?'
+          read:
+            label: Read File
+            type: boolean
+            default: true
+            tooltip: '-r: read existing file'
+          fsync:
+            label: FSync
+            type: boolean
+            default: true
+            tooltip: '-e: perform fsync upon POSIX write close'
+          fpp:
+            label: File Per Process
+            type: boolean
+            default: true
+            tooltip: '-F: create a separate file in each process?'
+          reorder:
+            label: Reorder tasks
+            type: boolean
+            default: true
+            tooltip: '-C: changes task ordering to n+1 ordering for readback'
