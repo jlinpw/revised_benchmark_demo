@@ -14,7 +14,7 @@ date
 jobdir=${PWD}
 jobnum=$(basename ${PWD})
 ssh_options="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-wfname=benchmark-demo
+wfname=ior-customized
 
 echo Starting benchmark_demo workflow...
 echo Execution is in main.sh, launched from the workflow.xml.
@@ -35,7 +35,7 @@ echod() {
     echo $(date): $@
     }
 
-export WFP_whost=${resource_publicIp}
+export WFP_whost=${settings_resource_publicIp}
 
 # Testing echod
 echod Testing echod. Currently on `hostname`.
@@ -67,7 +67,7 @@ echod "Check connection to cluster"
 sshcmd="ssh -f ${ssh_options} $WFP_whost"
 ${sshcmd} hostname
 
-WFP_jobscript=${jsource}.sbatch 
+WFP_jobscript=${settings_jsource}.sbatch 
 scp ${jobdir}/slurm-jobs/generic/${WFP_jobscript} ${WFP_whost}:${HOME}
 
 cat > ${jobdir}/wfenv.sh <<EOF
