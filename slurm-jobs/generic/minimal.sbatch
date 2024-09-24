@@ -56,6 +56,8 @@ ior_args="-i $ior_iterations -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t $ior_
 [ "$ior_reorder" = true ] && ior_args="$ior_args -C"
 [ "$ior_fsync" = true ] && ior_args="$ior_args -e"
 
+echo $ior_cmd $ior_args
+
 # small ior
 echo "running ior"
 mpirun -ppn $SLURM_CPUS_ON_NODE $ior_cmd $ior_args
