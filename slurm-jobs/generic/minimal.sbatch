@@ -46,7 +46,7 @@ echo "running intel mpi test"
 mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall 
 
 # make IOR command
-ior_cmd="$IOR_BIN_DIR/ior"
+ior_cmd="/lustre/bench/ior/bin_$SLURM_JOB_ID/ior"
 ior_args="-i $ior_iterations -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t $ior_transfer_size -b $ior_block_size -s $ior_segment_count"
 
 # Add flags based on conditions
