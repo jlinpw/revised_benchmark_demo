@@ -5,8 +5,8 @@ source inputs.sh
 export UCX_TLS=ud,sm,self
 
 jobdir=${PWD}
-export WFP_whost=${resource_publicIp}
-WFP_jobscript=${jsource}.sbatch 
+export WFP_whost=${settings_resource_publicIp}
+WFP_jobscript=${settings_jsource}.sbatch 
 echo Running on $WFP_whost
 
 ssh_options="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
