@@ -19,7 +19,9 @@ module list
 sudo yum -y install automake
 
 # get src code
-git clone https://github.com/hpc/ior.git
+if [ ! -d "$HOME/ior" ]; then
+    git clone https://github.com/hpc/ior.git
+fi
 
 # build ior
 cd ior
@@ -44,39 +46,18 @@ echo "running intel mpi test"
 mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall 
 
 # make IOR command
-ior_cmd=/lustre/bench/ior/bin_$SLURM_JOB_ID/ior
-ior_args=""
+ior_cmd="$IOR_BIN_DIR/ior"
+ior_args="-i $ior_iterations -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t $ior_transfer_size -b $ior_block_size -s $ior_segment_count"
 
-# Add -w flag if write is true
-if [ "$ior_write" = true ]; then
-  ior_args="$ior_args -w"
-fi
-
-# Add -r flag if read is true
-if [ "$ior_read" = true ]; then
-  ior_args="$ior_args -r"
-fi
-
-# Add iterations flag, test file, transfer size, block size, segments
-ior_args="$ior_args -i $ior_iterations -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t $ior_transfer_size -b $ior_block_size -s $ior_segment_count"
-
-# Add -F flag if fpp is true
-if [ "$ior_fpp" = true ]; then
-  ior_args="$ior_args -F"
-fi
-
-# Add -C flag if reorder is true
-if [ "$ior_reorder" = true ]; then
-  ior_args="$ior_args -C"
-fi
-
-# Add -e flag if fsync is true
-if [ "$ior_fsync" = true ]; then
-  ior_args="$ior_args -e"
-fi
+# Add flags based on conditions
+[ "$ior_write" = true ] && ior_args="$ior_args -w"
+[ "$ior_read" = true ] && ior_args="$ior_args -r"
+[ "$ior_fpp" = true ] && ior_args="$ior_args -F"
+[ "$ior_reorder" = true ] && ior_args="$ior_args -C"
+[ "$ior_fsync" = true ] && ior_args="$ior_args -e"
 
 # small ior
-echo "running minimal ior"
+echo "running ior"
 mpirun -ppn $SLURM_CPUS_ON_NODE $ior_cmd $ior_args
 
 # small mdtest 
