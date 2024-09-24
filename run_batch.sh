@@ -13,7 +13,7 @@ ssh_options="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 sshcmd="ssh -f ${ssh_options} $WFP_whost"
 
 echo "submitting batch job: $WFP_jobscript..."
-jobid=$(${sshcmd} "sbatch -o ${HOME}/slurm_job_%j.out -e ${HOME}/slurm_job_%j.out -N ${nnodes} --ntasks-per-node=${ppn} ${WFP_jobscript};echo Runcmd done2 >> ~/job.exit" | tail -1 | awk -F ' ' '{print $4}')
+jobid=$(${sshcmd} "sbatch -o ${HOME}/slurm_job_%j.out -e ${HOME}/slurm_job_%j.out -N ${settings_nnodes} --ntasks-per-node=${settings_ppn} ${WFP_jobscript};echo Runcmd done2 >> ~/job.exit" | tail -1 | awk -F ' ' '{print $4}')
 echo "JOB ID: ${jobid}"
 
 # Prepare kill script
