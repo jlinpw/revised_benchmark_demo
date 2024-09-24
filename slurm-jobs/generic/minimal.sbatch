@@ -7,8 +7,6 @@
 
 # source wfenv to load intel modules
 source wfenv.sh
-source inputs.sh
-echo $(cat inputs.sh)
 export UCX_TLS=tcp
 
 # verify environment

@@ -84,6 +84,8 @@ export MODULEPATH=\$MODULEPATH:$HOME/spack/share/spack/lmod/linux-centos7-x86_64
 echo \$MODULEPATH
 module load gcc-runtime glibc
 module load intel-oneapi-mpi intel-oneapi-compilers
+source inputs.sh
 EOF
 
 scp ${jobdir}/wfenv.sh ${WFP_whost}:${HOME}
+scp ${jobdir}/inputs.sh ${WFP_whost}:${HOME}
