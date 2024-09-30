@@ -7,7 +7,6 @@
 
 # source wfenv to load intel modules
 source wfenv.sh
-source inputs.sh
 export UCX_TLS=tcp
 
 # verify environment
@@ -19,12 +18,14 @@ module list
 sudo yum -y install automake
 
 # get src code
-git clone https://github.com/hpc/ior.git
+if [ ! -d "$HOME/ior" ]; then
+    git clone https://github.com/hpc/ior.git
+fi
 
 # build ior
 cd ior
 ./bootstrap
-./configure 
+./configure
 make clean && make
 
 # test build
@@ -40,14 +41,25 @@ cp $HOME/ior/src/ior /lustre/bench/ior/bin_$SLURM_JOB_ID/ior
 cp $HOME/ior/src/mdtest /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
 
 # run intel mpi test
-echo "======================"
 echo "running intel mpi test"
-mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall
+mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall 
 
-# standard ior
-echo "======================"
-echo "running standard ior"
-mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/ior/bin_$SLURM_JOB_ID/ior -r -w -i 3 -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t 64m -b 64m -s 16 -F -C -e 
+# make IOR command
+ior_cmd="/lustre/bench/ior/bin_$SLURM_JOB_ID/ior"
+ior_args="-i $ior_iterations -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t $ior_transfer_size -b $ior_block_size -s $ior_segment_count"
+
+# Add flags based on conditions
+[ "$ior_write" = true ] && ior_args="$ior_args -w"
+[ "$ior_read" = true ] && ior_args="$ior_args -r"
+[ "$ior_fpp" = true ] && ior_args="$ior_args -F"
+[ "$ior_reorder" = true ] && ior_args="$ior_args -C"
+[ "$ior_fsync" = true ] && ior_args="$ior_args -e"
+
+echo $ior_cmd $ior_args
+
+# ior
+echo "running ior"
+mpirun -ppn $SLURM_CPUS_ON_NODE $ior_cmd $ior_args
 
 # standard mdtest 
 echo "======================"

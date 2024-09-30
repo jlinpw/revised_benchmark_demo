@@ -57,7 +57,7 @@ ior_args="-i $ior_iterations -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t $ior_
 
 echo $ior_cmd $ior_args
 
-# small ior
+# ior
 echo "running ior"
 mpirun -ppn $SLURM_CPUS_ON_NODE $ior_cmd $ior_args
 
