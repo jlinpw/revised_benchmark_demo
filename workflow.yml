@@ -26,6 +26,16 @@ jobs:
           resource:
             type: compute-clusters
             label: Resource
+          jsource:
+            type: dropdown
+            label: Select benchmark to run
+            tooltip: Select which built-in benchmark to run for MDTest
+            options:
+              - label: Standard
+                value: standard
+              - label: Minimal
+                value: minimal
+            default: standard
           nnodes:
             label: Number of Nodes
             type: number
@@ -41,10 +51,10 @@ jobs:
         label: IOR Settings
         items:
           file:
-            label: Test File
-            type: string 
-            default: /lustre/bench/ior/run_$SLURM_JOB_ID/out
-            tooltip: '-o: the file to use in the test'
+            label: Test Filesystem
+            type: string
+            default: /lustre
+            tooltip: 'path of filesystem to test against'
           transfer_size:
             label: Transfer Size
             type: string
@@ -90,17 +100,3 @@ jobs:
             type: boolean
             default: true
             tooltip: '-C: changes task ordering to n+1 ordering for readback'
-      mdtest:
-        type: group
-        label: MDTest
-        items:
-          jsource:
-            type: dropdown
-            label: Select benchmark to run
-            tooltip: Select which built-in benchmark to run
-            options:
-              - label: Standard
-                value: standard
-              - label: Minimal
-                value: minimal
-            default: standard

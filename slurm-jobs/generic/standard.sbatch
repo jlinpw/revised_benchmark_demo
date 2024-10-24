@@ -33,20 +33,20 @@ echo "running test build"
 mpirun ./src/ior
 
 # run dir setup
-mkdir -p /lustre/bench/ior/bin_$SLURM_JOB_ID /lustre/bench/ior/run_$SLURM_JOB_ID
-mkdir -p /lustre/bench/mdtest/bin_$SLURM_JOB_ID /lustre/bench/mdtest/run_$SLURM_JOB_ID
+mkdir -p $ior_fs/bench/ior/bin_$SLURM_JOB_ID $ior_fs/bench/ior/run_$SLURM_JOB_ID
+mkdir -p $ior_fs/bench/mdtest/bin_$SLURM_JOB_ID $ior_fs/bench/mdtest/run_$SLURM_JOB_ID
 
 # copy executables to lustre 
-cp $HOME/ior/src/ior /lustre/bench/ior/bin_$SLURM_JOB_ID/ior
-cp $HOME/ior/src/mdtest /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
+cp $HOME/ior/src/ior $ior_fs/bench/ior/bin_$SLURM_JOB_ID/ior
+cp $HOME/ior/src/mdtest $ior_fs/bench/mdtest/bin_$SLURM_JOB_ID/mdtest
 
 # run intel mpi test
 echo "running intel mpi test"
 mpirun -ppn $SLURM_CPUS_ON_NODE IMB-MPI1 alltoall 
 
 # make IOR command
-ior_cmd="/lustre/bench/ior/bin_$SLURM_JOB_ID/ior"
-ior_args="-i $ior_iterations -o /lustre/bench/ior/run_$SLURM_JOB_ID/out -t $ior_transfer_size -b $ior_block_size -s $ior_segment_count"
+ior_cmd="$ior_fs/bench/ior/bin_$SLURM_JOB_ID/ior"
+ior_args="-i $ior_iterations -o $ior_fs/bench/ior/run_$SLURM_JOB_ID/out -t $ior_transfer_size -b $ior_block_size -s $ior_segment_count"
 
 # Add flags based on conditions
 [ "$ior_write" = true ] && ior_args="$ior_args -w"
@@ -64,4 +64,4 @@ mpirun -ppn $SLURM_CPUS_ON_NODE $ior_cmd $ior_args
 # standard mdtest 
 echo "======================"
 echo "running standard mdtest"
-mpirun -ppn $SLURM_CPUS_ON_NODE /lustre/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -e 4096 -w 4096 -i 3 -u -d /lustre/bench/mdtest/run_$SLURM_JOB_ID 
+mpirun -ppn $SLURM_CPUS_ON_NODE $ior_fs/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -e 4096 -w 4096 -i 3 -u -d $ior_fs/bench/mdtest/run_$SLURM_JOB_ID 
