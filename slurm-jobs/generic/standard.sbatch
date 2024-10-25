@@ -62,6 +62,6 @@ echo "running ior"
 mpirun -ppn $SLURM_CPUS_ON_NODE $ior_cmd $ior_args
 
 # standard mdtest 
-echo "======================"
-echo "running standard mdtest"
-mpirun -ppn $SLURM_CPUS_ON_NODE $ior_fs/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -e 4096 -w 4096 -i 3 -u -d $ior_fs/bench/mdtest/run_$SLURM_JOB_ID 
+# echo "======================"
+# echo "running standard mdtest"
+# mpirun -ppn $SLURM_CPUS_ON_NODE $ior_fs/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -e 4096 -w 4096 -i 3 -u -d $ior_fs/bench/mdtest/run_$SLURM_JOB_ID 

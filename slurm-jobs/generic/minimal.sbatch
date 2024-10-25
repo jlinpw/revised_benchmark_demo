@@ -62,5 +62,5 @@ echo "running ior"
 mpirun -ppn $SLURM_CPUS_ON_NODE $ior_cmd $ior_args
 
 # small mdtest 
-echo "running minimal mdtest"
-mpirun -ppn $SLURM_CPUS_ON_NODE $ior_fs/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -i 1 -u -d $ior_fs/bench/mdtest/run_$SLURM_JOB_ID 
+# echo "running minimal mdtest"
+# mpirun -ppn $SLURM_CPUS_ON_NODE $ior_fs/bench/mdtest/bin_$SLURM_JOB_ID/mdtest -n 20840 -i 1 -u -d $ior_fs/bench/mdtest/run_$SLURM_JOB_ID 
